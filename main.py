@@ -25,10 +25,12 @@ state = {
 
     "similar_count": 0,
 
-    # "step_max": 0,  # FIXME change wenn über x% Unterschied?
-    # "step_toMax": 0,  # steps since last max
     "step_direction": 1,  # 1-> pos, -1-> neg
-    "step_direction_changes": 0  # wenn 5 (hintereinander), dann neues lokales Max?
+    "step_direction_changes": 0,  # wenn 5 (hintereinander), dann neues lokales Max?
+
+    "stack": [],
+    "lower" : 0,
+    "higher" : 0
 }
 
 
@@ -39,7 +41,6 @@ def start_custom_af(cam: cv2.VideoCapture, focus_state: state):
         cv2.imshow('frame', frame)
 
         focus_state["step"] = cam.get(cv2.CAP_PROP_FOCUS)
-        # print(state["step"], " vs ", cam.get(cv2.CAP_PROP_FOCUS))
         focus_state["rating_previous"] = focus_state["rating_current"]
         focus_state["rating_current"] = rating.rate_image(frame)
         if focus_state["initial"]:
@@ -81,10 +82,11 @@ def start_bisect_af(cam: cv2.VideoCapture):
             last_hundred.append(score)
             if len(last_hundred) > 100:
                 last_hundred.pop()
-                if new_score < 0.8 * (sum(last_hundred) / len(last_hundred)):  # Durchschnitt letzte Hundert Scores
+                mean = (sum(last_hundred) / len(last_hundred))
+                if new_score < 0.8 * mean:  # Durchschnitt letzte Hundert Scores
                     lower += 1
                     higher = 0
-                elif new_score > 1.2 * (sum(last_hundred) / len(last_hundred)):
+                elif new_score > 1.2 * mean:
                     higher += 1
                     lower = 0
                 if (lower > 30) or (higher > 30):

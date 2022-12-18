@@ -10,8 +10,6 @@ def find_max(cam: cv2.VideoCapture, focus: main.state):
     """
     print("focus:" + str(cam.get(cv2.CAP_PROP_FOCUS)))
 
-    # Probieren FIXME in 5er oder 10er schritten?
-
     # Check for Overflow
     if focus["step"] in {0, 255}:
         focus["initial"] = True
@@ -37,17 +35,22 @@ def adjust_focus(cam: cv2.VideoCapture, focus: main.state):
         find_max(cam, focus)
 
     else:
-        # primitive scene change detection
-        if focus["rating_current"] > 0.8 * focus["rating_max"]:
-            # print("similar")
-            focus["similar_count"] += 1
-        elif focus["similar_count"] > 10 and focus["rating_current"] < 0.8 * focus["rating_max"]:  # rand nr
-            focus["initial"] = True
-            cam.set(cv2.CAP_PROP_FOCUS, 0)
-            focus["similar_count"] = 0
-        else:
-            focus["similar_count"] = 0
-            find_max(cam, focus)
+        focus["stack"].append(focus["rating_current"])
+        if len(focus["stack"]) > 100:
+            focus["stack"].pop()
+            mean = (sum(focus["stack"]) / len(focus["stack"]))
+            if focus["rating_current"] < 0.8 * mean:  # Durchschnitt letzte Hundert Scores
+                focus["lower"] += 1
+                focus["higher"] = 0
+            elif focus["rating_current"] > 1.2 * mean:
+                focus["higher"] += 1
+                focus["lower"] = 0
+            if (focus["lower"] > 30) or (focus["higher"] > 30):
+                focus["initial"] = True
+                cam.set(cv2.CAP_PROP_FOCUS, 0)
+                focus["stack"] = []
+                focus["lower"] = 0
+                focus["higher"] = 0
 
 
 def initial_scan(cam: cv2.VideoCapture, focus: main.state):
@@ -113,11 +116,6 @@ def find_max_bisection(cam: cv2.VideoCapture):
                 right -= 1
             unchanged_max += 1
             if unchanged_max > 2: break
-            # both points are below the maximum we've seen before.
-            # restart with middle = maximum and interval +- 20
-            # left = max_focus[1]  - (10-count)
-            # right = max_focus[1] + (10-count)
-            # hc = 1
             if abs(left - right) < 4: break
             continue
 
