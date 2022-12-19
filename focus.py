@@ -8,7 +8,7 @@ def find_max(cam: cv2.VideoCapture, focus: main.state):
     """
     Maximum search based on Hill-Climbing
     """
-    print("focus:" + str(cam.get(cv2.CAP_PROP_FOCUS)))
+    #print("focus:" + str(cam.get(cv2.CAP_PROP_FOCUS)))
 
     # Check for Overflow
     if focus["step"] in {0, 255}:
@@ -93,7 +93,7 @@ def find_max_bisection(cam: cv2.VideoCapture):
 
         cam.set(cv2.CAP_PROP_FOCUS, sample_point_l)
         # delay
-        for _ in range(3):
+        for _ in range(2):
             _, dummy = cam.read()
 
         _, frame = cam.read()
