@@ -39,18 +39,18 @@ def rate_image(edges, nr):
     #cv2.imshow("edges", abs_dst)
     #cv2.waitKey(0)
 
-    # if nr == 1:
-    #     cv2.imwrite("quality_img_gaus_3x3.png", abs_dst)
-    # elif nr == 2:
-    #     cv2.imwrite("quality_img_gaus_5x5.png", abs_dst)
-    # elif nr == 3:
-    #     cv2.imwrite("quality_img_gaus_55x55.png", abs_dst)
-    # elif nr == 4:
-    #     cv2.imwrite("quality_img_median_5x5.png", abs_dst)
-    # elif nr == 5:
-    #     cv2.imwrite("quality_img_norm_5x5.png", abs_dst)
-    # elif nr == 6:
-    #     cv2.imwrite("quality_img_bilat_5x5.png", abs_dst)
+    if nr == 1:
+        cv2.imwrite("quality_img_gaus_3x3.png", abs_dst)
+    elif nr == 2:
+        cv2.imwrite("quality_img_gaus_5x5.png", abs_dst)
+    elif nr == 3:
+        cv2.imwrite("quality_img_gaus_55x55.png", abs_dst)
+    elif nr == 4:
+        cv2.imwrite("quality_img_median_5x5.png", abs_dst)
+    elif nr == 5:
+        cv2.imwrite("quality_img_norm_5x5.png", abs_dst)
+    elif nr == 6:
+        cv2.imwrite("quality_img_bilat_5x5.png", abs_dst)
 
     return len(np.argwhere(abs_dst > 200))
 

@@ -79,60 +79,60 @@ def sobel_edge_detector():  # https://stackoverflow.com/questions/51167768/sobel
 print()
 print("Best Times:")
 
-# timer(cv2.GaussianBlur, 0, 0, img, (3, 3), 0)
-# print(f'Gaussian Blur 3x3:   {results[0]} ns')
-#
-# timer(cv2.GaussianBlur, 1, 0, img, (5, 5), 0)
-# print(f"Gaussian Blur 5x5:   {results[1]} ns")
-#
-# timer(cv2.GaussianBlur, 2, 0, img, (55, 55), 0)
-# print(f"Gaussian Blur 55x55: {results[2]} ns")
-#
-# timer(cv2.medianBlur, 3, 0, img, 5)  # (5,5) ?
-# print(f"Median Blur 5x5:     {results[3]} ns")
+timer(cv2.GaussianBlur, 0, 0, img, (3, 3), 0)
+print(f'Gaussian Blur 3x3:   {results[0]} ns')
 
-# timer(cv2.blur, 4, 0, img, ksize=(5, 5))
-# print(f"Normalized Blur 5x5:    {results[4][0]} ns")
+timer(cv2.GaussianBlur, 1, 0, img, (5, 5), 0)
+print(f"Gaussian Blur 5x5:   {results[1]} ns")
 
-# timer(cv2.bilateralFilter, 5, 1, img, 5, 5 * 2, 5 / 2)  # slow?
-# print(f"Bilateral Blur 5x5:     {results[5][0]} ns")
+timer(cv2.GaussianBlur, 2, 0, img, (55, 55), 0)
+print(f"Gaussian Blur 55x55: {results[2]} ns")
+
+timer(cv2.medianBlur, 3, 0, img, 5)  # (5,5) ?
+print(f"Median Blur 5x5:     {results[3]} ns")
+
+timer(cv2.blur, 4, 0, img, ksize=(5, 5))
+print(f"Normalized Blur 5x5:    {results[4][0]} ns")
+
+timer(cv2.bilateralFilter, 5, 1, img, 5, 5 * 2, 5 / 2)  # slow?
+print(f"Bilateral Blur 5x5:     {results[5][0]} ns")
 
 # # # # # # blurs sw
 
-# timer(cv2.GaussianBlur, 0, 1, img2, ksize=(3, 3), sigmaX=0)
-# print(f'Gaussian Blur sw 3x3:   {results[0][1]} ns')
-#
-# timer(cv2.GaussianBlur, 1, 1, img2, ksize=(5, 5), sigmaX=0)
-# print(f"Gaussian Blur sw 5x5:   {results[1][1]} ns")
-#
-# timer(cv2.GaussianBlur, 2, 1, img2, ksize=(55 ,55), sigmaX=0)
-# print(f"Gaussian Blur sw  55x55:{results[2][1]} ns")
-#
-# timer(cv2.medianBlur, 3, 1, img2, ksize=5)
-# print(f"Median Blur sw 5x5:     {results[3][1]} ns")
-#
-# timer(cv2.blur, 4, 1, img2, ksize=(5 ,5))
-# print(f"Normalized Blur sw 5x5: {results[4][1]} ns")
-#
-# timer(cv2.bilateralFilter, 5, 1, img2, 5, 5 * 2, 5 / 2)  # slow?
-# print(f"Bilateral Blur sw 5x5:  {results[5][1]} ns")
+timer(cv2.GaussianBlur, 0, 1, img2, ksize=(3, 3), sigmaX=0)
+print(f'Gaussian Blur sw 3x3:   {results[0][1]} ns')
 
-# # # # # #
+timer(cv2.GaussianBlur, 1, 1, img2, ksize=(5, 5), sigmaX=0)
+print(f"Gaussian Blur sw 5x5:   {results[1][1]} ns")
 
-# timer(cv2.Sobel, 6, 1, img2, cv2.CV_8U, 1, 0, ksize=5)
-# print(f"Sobel X 5x5:            {results[6][1]} ns")
-#
-# timer(cv2.Sobel, 7, 1, img2, cv2.CV_8U, 0, 1, ksize=5)
-# print(f"Sobel Y 5x5:            {results[7][1]} ns")
-#
+timer(cv2.GaussianBlur, 2, 1, img2, ksize=(55 ,55), sigmaX=0)
+print(f"Gaussian Blur sw  55x55:{results[2][1]} ns")
+
+timer(cv2.medianBlur, 3, 1, img2, ksize=5)
+print(f"Median Blur sw 5x5:     {results[3][1]} ns")
+
+timer(cv2.blur, 4, 1, img2, ksize=(5 ,5))
+print(f"Normalized Blur sw 5x5: {results[4][1]} ns")
+
+timer(cv2.bilateralFilter, 5, 1, img2, 5, 5 * 2, 5 / 2)  # slow?
+print(f"Bilateral Blur sw 5x5:  {results[5][1]} ns")
+
+# # # # #
+
+timer(cv2.Sobel, 6, 1, img2, cv2.CV_8U, 1, 0, ksize=5)
+print(f"Sobel X 5x5:            {results[6][1]} ns")
+
+timer(cv2.Sobel, 7, 1, img2, cv2.CV_8U, 0, 1, ksize=5)
+print(f"Sobel Y 5x5:            {results[7][1]} ns")
+
 timer(sobel_edge_detector, 8, 1)
 print(f"Sobel Gesamt 5x5:       {results[8][1]} ns")
 
-# timer(cv2.Laplacian, 10, 1, img2, cv2.CV_8U, ksize=5)
-# print(f"Laplace:               {results[10][1]} ns")
+timer(cv2.Laplacian, 10, 1, img2, cv2.CV_8U, ksize=5)
+print(f"Laplace:               {results[10][1]} ns")
 
-# timer(cv2.Canny, 9, 1, img2, 255 / 3, 255)
-# print(f"Canny:               {results[9][1]} ns")
+timer(cv2.Canny, 9, 1, img2, 255 / 3, 255)
+print(f"Canny:               {results[9][1]} ns")
 
 
 # system_info
