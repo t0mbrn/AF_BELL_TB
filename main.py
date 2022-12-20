@@ -82,7 +82,7 @@ def start_bisect_af(cam: cv2.VideoCapture):
             last_hundred.append(score)
             if len(last_hundred) > 100:
                 last_hundred.pop()
-                mean = (sum(last_hundred) / len(last_hundred))
+                mean = (sum(last_hundred) / 100)
                 if new_score < 0.5 * mean:  # Durchschnitt letzte Hundert Scores
                     lower += 1
                     higher = 0

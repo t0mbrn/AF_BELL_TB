@@ -41,7 +41,7 @@ def adjust_focus(cam: cv2.VideoCapture, focus: main.state):
         focus["stack"].append(focus["rating_current"])
         if len(focus["stack"]) > 100:
             focus["stack"].pop()
-            mean = (sum(focus["stack"]) / len(focus["stack"]))
+            mean = (sum(focus["stack"]) / 100)
             if focus["rating_current"] < 0.5 * mean:  # Durchschnitt letzte Hundert Scores
                 focus["lower"] += 1
                 focus["higher"] = 0
