@@ -42,10 +42,10 @@ def adjust_focus(cam: cv2.VideoCapture, focus: main.state):
         if len(focus["stack"]) > 100:
             focus["stack"].pop()
             mean = (sum(focus["stack"]) / len(focus["stack"]))
-            if focus["rating_current"] < 0.8 * mean:  # Durchschnitt letzte Hundert Scores
+            if focus["rating_current"] < 0.5 * mean:  # Durchschnitt letzte Hundert Scores
                 focus["lower"] += 1
                 focus["higher"] = 0
-            elif focus["rating_current"] > 1.2 * mean:
+            elif focus["rating_current"] > 1.5 * mean:
                 focus["higher"] += 1
                 focus["lower"] = 0
             if (focus["lower"] > 30) or (focus["higher"] > 30):
@@ -110,6 +110,8 @@ def find_max_bisection(cam: cv2.VideoCapture):
 
         _, frame = cam.read()
         focus_r = rating.rate_image(frame)
+
+        cv2.imshow('frame', frame)
 
         if focus_l > max_focus[0]:
             max_focus = [focus_l, sample_point_l]

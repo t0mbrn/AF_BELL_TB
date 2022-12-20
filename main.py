@@ -83,10 +83,10 @@ def start_bisect_af(cam: cv2.VideoCapture):
             if len(last_hundred) > 100:
                 last_hundred.pop()
                 mean = (sum(last_hundred) / len(last_hundred))
-                if new_score < 0.8 * mean:  # Durchschnitt letzte Hundert Scores
+                if new_score < 0.5 * mean:  # Durchschnitt letzte Hundert Scores
                     lower += 1
                     higher = 0
-                elif new_score > 1.2 * mean:
+                elif new_score > 1.5 * mean:
                     higher += 1
                     lower = 0
                 if (lower > 30) or (higher > 30):
@@ -114,12 +114,6 @@ if __name__ == "__main__":
         method = input("1 - Bisection \nor \n2 - Hill Climbing? ")
         if method == "1":
             start_bisect_af(cap)
-            # cap.set(cv2.CAP_PROP_FOCUS, 20)
-            # print(cap.get(cv2.CAP_PROP_FOCUS))
-            # print(cap.get(cv2.CAP_PROP_AUTOFOCUS))
-            # print(cap.get(cv2.CAP_PROP_FPS))
-            # print(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-            # print(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         elif method == "2":
             start_custom_af(cap, state)
         else:
