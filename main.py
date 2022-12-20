@@ -29,8 +29,8 @@ state = {
     "step_direction_changes": 0,  # wenn 5 (hintereinander), dann neues lokales Max?
 
     "stack": [],
-    "lower" : 0,
-    "higher" : 0
+    "lower": 0,
+    "higher": 0
 }
 
 
@@ -40,7 +40,7 @@ def start_custom_af(cam: cv2.VideoCapture, focus_state: state):
         ret, frame = cam.read()
         cv2.imshow('frame', frame)
 
-        focus_state["step"] = cam.get(cv2.CAP_PROP_FOCUS)
+        # focus_state["step"] = cam.get(cv2.CAP_PROP_FOCUS)
         focus_state["rating_previous"] = focus_state["rating_current"]
         focus_state["rating_current"] = rating.rate_image(frame)
         if focus_state["initial"]:
@@ -114,6 +114,12 @@ if __name__ == "__main__":
         method = input("1 - Bisection \nor \n2 - Hill Climbing? ")
         if method == "1":
             start_bisect_af(cap)
+            # cap.set(cv2.CAP_PROP_FOCUS, 20)
+            # print(cap.get(cv2.CAP_PROP_FOCUS))
+            # print(cap.get(cv2.CAP_PROP_AUTOFOCUS))
+            # print(cap.get(cv2.CAP_PROP_FPS))
+            # print(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            # print(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         elif method == "2":
             start_custom_af(cap, state)
         else:

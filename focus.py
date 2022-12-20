@@ -7,13 +7,14 @@ import rating
 def find_max(cam: cv2.VideoCapture, focus: main.state):
     """
     Maximum search based on Hill-Climbing
+    (Tom Braune)
     """
-    #print("focus:" + str(cam.get(cv2.CAP_PROP_FOCUS)))
 
     # Check for Overflow
     if focus["step"] in {0, 255}:
         focus["initial"] = True
-        cam.set(cv2.CAP_PROP_FOCUS, 0)
+        focus["step"] = 0
+        cam.set(cv2.CAP_PROP_FOCUS, focus["step"])
         focus["step_direction_changes"] = 0
 
     elif focus["rating_current"] < focus["rating_previous"]:
@@ -21,11 +22,13 @@ def find_max(cam: cv2.VideoCapture, focus: main.state):
         focus["step_direction"] = - focus["step_direction"]
         focus["step_direction_changes"] = focus["step_direction_changes"] + 1
         # Calculating new step w/out if based on sign of step direction (either -/+)
-        cam.set(cv2.CAP_PROP_FOCUS, focus["step"] + focus["step_direction"] * 5)
+        focus["step"] = focus["step"] + focus["step_direction"] * 5
+        cam.set(cv2.CAP_PROP_FOCUS, focus["step"])
 
     else:
-        focus["step_direction_changes"] = 0
-        cam.set(cv2.CAP_PROP_FOCUS, focus["step"] + focus["step_direction"] * 5)
+        focus["step_direction_changes"] = 0  # evt überarbeiten
+        focus["step"] = focus["step"] + focus["step_direction"] * 5
+        cam.set(cv2.CAP_PROP_FOCUS, focus["step"])
 
 
 def adjust_focus(cam: cv2.VideoCapture, focus: main.state):
@@ -47,7 +50,8 @@ def adjust_focus(cam: cv2.VideoCapture, focus: main.state):
                 focus["lower"] = 0
             if (focus["lower"] > 30) or (focus["higher"] > 30):
                 focus["initial"] = True
-                cam.set(cv2.CAP_PROP_FOCUS, 0)
+                focus["step"] = 0
+                cam.set(cv2.CAP_PROP_FOCUS, focus["step"])
                 focus["stack"] = []
                 focus["lower"] = 0
                 focus["higher"] = 0
@@ -63,9 +67,11 @@ def initial_scan(cam: cv2.VideoCapture, focus: main.state):
         focus["initial_max_step"] = focus["step"]
 
     if focus["step"] < 255:
-        cam.set(cv2.CAP_PROP_FOCUS, (focus["step"] + 10))
+        focus["step"] = focus["step"] + 10
+        cam.set(cv2.CAP_PROP_FOCUS, focus["step"])
     else:
-        cam.set(cv2.CAP_PROP_FOCUS, focus["initial_max_step"])
+        focus["step"] = focus["initial_max_step"]
+        cam.set(cv2.CAP_PROP_FOCUS, focus["step"])
         focus["rating_max"] = focus["initial_max"]
         focus["initial_max_step"] = 0
         focus["initial_max"] = 0
@@ -76,7 +82,7 @@ def initial_scan(cam: cv2.VideoCapture, focus: main.state):
 def find_max_bisection(cam: cv2.VideoCapture):
     """
      Maximum search based on Bisection
-     (Konzept von Ralf Hubert)
+     (Ralf Hubert, Tom Braune)
      """
     left = 0
     right = 255
@@ -97,9 +103,11 @@ def find_max_bisection(cam: cv2.VideoCapture):
             _, dummy = cam.read()
 
         _, frame = cam.read()
+        print(cam.get(cv2.CAP_PROP_FOCUS))
         focus_l = rating.rate_image(frame)
 
         cam.set(cv2.CAP_PROP_FOCUS, sample_point_r)
+
         _, frame = cam.read()
         focus_r = rating.rate_image(frame)
 
