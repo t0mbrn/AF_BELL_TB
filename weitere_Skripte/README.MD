@@ -10,3 +10,4 @@ In diesem Verzeichnis sind Skripte zu finden die für das Erstellen von Abbildun
 - timer.py & newTimer.py: Testen des Laufzeitverhaltens verschiedener Programmbestandteile
 - quality.py: Bewertung von Weichzeichnern
 - system_info.py: Auslesen der System-Daten
+- img.png: Referenzbild
